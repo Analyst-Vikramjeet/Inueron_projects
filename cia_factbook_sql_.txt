@@ -1,0 +1,50 @@
+create database population;
+use population
+
+--- CREATED TABLE IN SNOWFLAKE WITHOUT USING SQL COMMANDS AND LOADED CSV DATA USIGN BULK LOAD  ---
+---I have replaced the NA values in this dataset with 0---
+
+
+SNOWFLAKE SQL QUERIES ---
+
+
+
+
+1. select * from CIA_FACTBOOK;
+
+
+
+---country with highest number of population---
+
+
+2. select country, population from cia_factbook order by population desc limit 1;
+
+
+
+---country with least no of people/population---
+
+3. select country, population from cia_factbook where population > 30 order by population limit 5 ;
+
+
+
+
+---country with the highest population growth rate---
+
+4. select country,population_growth_rate from cia_factbook order by population_growth_rate desc limit 1;
+
+
+
+
+---country which is densely populated--- 
+
+
+5. select country, population as densely_populated_country from cia_factbook order by population desc limit 1;
+
+
+
+
+---country which has extraordinary population--
+
+6.select country, population as extraordinary_population from cia_factbook order by population desc limit 1
+
+
