@@ -1,0 +1,106 @@
+create database sql_project_accident;
+use sql_project_accident;
+show databases;
+
+-------- creating table for storing accident records--------
+    
+create or replace table accident_2015 (
+Accident_Index string,
+Location_Easting_OSGR INTEGER,
+    Location_Northing_OSGR INTEGER,
+    Longitude FLOAT,
+    Latitude FLOAT,
+    Police_Force INTEGER,
+    Accident_Severity INTEGER,
+    Number_of_Vehicles INTEGER,
+    Number_of_Casualties INTEGER,
+    Date_acc string,
+    Day_of_Week Integer ,
+    Time string,
+    Local_Authority_District Integer,
+    Local_Authority_Highway Varchar,
+   first_Road_Class integer,
+    first_Road_Number integer,
+    Road_Type integer,
+    Speed_limit integer,
+    Junction_Detail integer,
+    Junction_Control integer,
+    second_Road_Class integer,
+    second_Road_Number integer,
+    Pedestrian_Crossing_hc integer,
+    Pedestrian_Crossing_pf integer,
+    Light_Conditions integer,
+    Weather_Conditions integer,
+    Road_Surface_Conditions integer,
+    Special_Conditions_at_Site integer,
+    Carriageway_Hazards integer,
+    Urban_or_Rural_Area integer,
+    Did_Police_Officer_Attend_Scene_of_Accident integer,
+    LSOA_of_Accident_Location varchar
+
+);
+
+---------creating vechile table for storing vechile record------
+
+ create table vechile_2015(
+ 
+     Accident_Index string,
+     Vehicle_Reference integer,
+     Vehicle_Type integer,
+     Towing_and_Articulation integer,
+     Vehicle_Manoeuvre integer,
+     Vehicle_Location_Restricted_Lane integer,
+     Junction_Location integer,
+     Skidding_and_Overturning integer,
+     Hit_Object_in_Carriageway integer,
+     Vehicle_Leaving_Carriageway integer,
+     Hit_Object_off_Carriageway integer,
+ first_Point_of_Impact integer,
+     Was_Vehicle_Left_Hand_Drive integer,
+     Journey_Purpose_of_Driver integer,
+     Sex_of_Driver integer,
+     Age_of_Driver integer,
+     Age_Band_of_Driver integer,
+     Engine_Capacity_CC integer,
+     Propulsion_Code integer,
+     Age_of_Vehicle integer,
+     Driver_IMD_Decile integer,
+     Driver_Home_Area_Type integer,
+     Vehicle_IMD_Decile integer
+
+ )
+ 
+ --------Used snowflake import CSV file function to import all the records for these table -------
+ 
+ -----Checking whether records have been imported in these table or not ------
+ 
+ select * from vechile_2015;
+ 
+  select * from accident_2015;
+  
+  
+  --------creating new table for getting all the required coloums from these two different table by applying left join---
+  
+  
+ create table acc_sev_vechle_type as (select accident_2015.accident_severity ,vechile_2015.vehicle_type from accident_2015 left join vechile_2015 on  accident_2015.accident_index= vechile_2015.accident_index);
+ 
+ 
+
+ --Average severity by vechile type----
+ 
+ select avg(accident_severity) as acc_severity_avg, vehicle_type from acc_sev_vechle_type group by vehicle_type;
+ 
+
+------ average severity_of_vechile_by_total_motorcycle_-----
+ 
+ select avg(accident_severity),vehicle_type from acc_sev_vechle_type where vehicle_type in (2,3,4,5,23,97 )
+ group by vehicle_type;
+ 
+ 
+ ----Evaluate Accident Severity and Total Accidents per Vehicle Type-----
+select count(vehicle_type) as Total_acc,accident_severity,vehicle_type from acc_sev_vechle_type group by vehicle_type, accident_severity;
+
+ ---------------------------------------------------------------------------------------------
+ 
+ 
+ 
